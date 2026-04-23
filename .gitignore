@@ -1,0 +1,44 @@
+# ── Python ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ────────────────────────────────────────
+venv/
+env/
+.env
+.venv
+
+# ── Jupyter / Colab ─────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── Model weights (hosted on Hugging Face, not in repo) ─────────
+*.pt
+*.pth
+*.ckpt
+
+# ── Dataset files (hosted on Zenodo/HF, not in repo) ────────────
+*.pkl
+*.zip
+*.h5
+*.hdf5
+
+# ── OS files ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── VSCode ──────────────────────────────────────────────────────
+.vscode/
+
+# ── Output / generated files ────────────────────────────────────
+*.log
+runs/
+outputs/
