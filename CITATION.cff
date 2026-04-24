@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use SwiftCFD in your research, please cite it using the metadata below."
+title: "SwiftCFD — Fine-tuned DeepCFD UNet Surrogate Model for CFD Flow Field Prediction"
+version: "1.0.0"
+date-released: "2026-04-24"
+license: MIT
+repository-code: "https://github.com/vamsigudipati/SwiftCFD"
+abstract: >
+  SwiftCFD is a fine-tuned deep learning surrogate model for predicting
+  steady-state laminar flow fields (Ux, Uy, pressure) around 2D obstacles
+  in ~50ms, based on the DeepCFD UNetEx architecture by Ribeiro et al. (2020).
+authors:
+  - family-names: Gudipati
+    given-names: Vamsi
+references:
+  - type: article
+    title: "DeepCFD: Efficient Steady-State Laminar Flow Approximation with Deep Convolutional Neural Networks"
+    year: 2020
+    url: "https://arxiv.org/abs/2004.08826"
+    authors:
+      - family-names: Ribeiro
+        given-names: "Mateus D."
+      - family-names: Rehman
+        given-names: Auwal
+      - family-names: Ahmed
+        given-names: Shahood
+      - family-names: Dengel
+        given-names: Andreas
