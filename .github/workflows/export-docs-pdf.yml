@@ -1,0 +1,51 @@
+name: Export Documentation PDF
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - DOCUMENTATION.md
+  workflow_dispatch:
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pandoc and LaTeX packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            pandoc \
+            texlive-xetex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra
+
+      - name: Create dummy assets directory
+        # Prevent pandoc errors if DOCUMENTATION.md references images in assets/
+        run: mkdir -p assets
+
+      - name: Convert DOCUMENTATION.md to PDF
+        run: |
+          pandoc DOCUMENTATION.md \
+            -o DOCUMENTATION.pdf \
+            --pdf-engine=xelatex \
+            -V geometry:margin=1in \
+            -V fontsize=11pt \
+            -V colorlinks=true \
+            --highlight-style=tango \
+            --resource-path=.
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SwiftCFD-Documentation-PDF
+          path: DOCUMENTATION.pdf
+          retention-days: 30
