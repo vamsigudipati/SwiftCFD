@@ -1,0 +1,26 @@
+services:
+  swiftcfd-api:
+    build: .
+    image: swiftcfd-service:latest
+    ports:
+      - "8000:8000"
+    environment:
+      # "hf" downloads mymodel_v2.pt from the Hub; or mount a file and point here,
+      # e.g. SWIFTCFD_WEIGHTS=/weights/mymodel_v2.pt
+      SWIFTCFD_WEIGHTS: ${SWIFTCFD_WEIGHTS:-hf}
+      SWIFTCFD_LOG_LEVEL: ${SWIFTCFD_LOG_LEVEL:-INFO}
+      SWIFTCFD_LOG_FILE: /app/logs/requests.jsonl
+      SWIFTCFD_TORCH_THREADS: ${SWIFTCFD_TORCH_THREADS:-1}
+      # HF_TOKEN: ${HF_TOKEN}   # only needed for private weights
+    volumes:
+      - hf-cache:/cache/hf       # persist downloaded weights across restarts
+      - ./logs:/app/logs         # JSON-lines request log on the host
+      # - ./weights:/weights:ro  # optional: local weights instead of the Hub
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+volumes:
+  hf-cache:

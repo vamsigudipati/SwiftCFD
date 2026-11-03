@@ -1,0 +1,13 @@
+.git
+.github
+assets
+*.pkl
+*.pt
+*.zip
+__pycache__
+.pytest_cache
+logs
+app.py
+train_*.py
+visualize.py
+*.md
