@@ -23,6 +23,7 @@ from contextlib import asynccontextmanager
 import numpy as np
 import torch
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
@@ -101,7 +102,7 @@ async def _validation_handler(request: Request, exc: RequestValidationError):
             h = "invalid"
         log_request(access_log, input_hash=h, latency_ms=0.0, in_envelope=False,
                     status=422, outcome="rejected", reason="schema")
-    return JSONResponse(status_code=422, content={"detail": exc.errors(), "reason": "schema"})
+    return JSONResponse(status_code=422, content={"detail": jsonable_encoder(exc.errors()), "reason": "schema"})
 
 
 # ── Endpoints ──────────────────────────────────────────────────────

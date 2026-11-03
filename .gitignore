@@ -42,3 +42,6 @@ desktop.ini
 *.log
 runs/
 outputs/
+# ── Inference service ───────────────────────────────────────────
+.pytest_cache/
+logs/
