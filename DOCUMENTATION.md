@@ -478,6 +478,7 @@ python visualize.py \
 ```
 Code + weights  →  Hugging Face Hub  (vamsigudipati/deepcfd-model)
 App             →  Hugging Face Spaces (Streamlit runtime)
+API             →  FastAPI service in service/ (Docker, see README "Serving the model")
 ```
 
 ### App Structure
@@ -494,7 +495,26 @@ App             →  Hugging Face Spaces (Streamlit runtime)
 - Previews all 3 input channels
 - Runs inference and displays prediction
 
-> **Tab 3 (Draw Obstacle) was added then removed** — see Section 8, Issue 5.
+#### Tab 3 — Draw Obstacle
+- Two drawing modes, selected with a radio button:
+  - **Shape Selector** — choose Rectangle / Circle / Diamond / Triangle and
+    set centre, size via sliders
+  - **Freehand Draw** — paint the obstacle on a canvas provided by
+    [`streamlit-drawable-canvas`](https://github.com/andfanilo/streamlit-drawable-canvas)
+- Inlet velocity `Ux` slider (0.01–0.30 m/s)
+- The binary mask is converted to a Signed Distance Function and stacked with
+  the inlet velocity channels (`build_input_tensor`) before inference
+- The freehand mask is persisted in `st.session_state` so it survives the
+  "Run" button click (see Section 8, Issue 4)
+
+> **History:** Tab 3 was removed during initial debugging because obstacles
+> placed outside the training region produced near-identical, physically
+> meaningless results (Section 8, Issue 5). It was re-added in
+> [PR #3](https://github.com/vamsigudipati/SwiftCFD/pull/3) together with the
+> `streamlit-drawable-canvas` dependency. The out-of-distribution limitation
+> still applies: the app itself does **not** block such inputs, whereas the
+> FastAPI inference service in `service/` rejects them with a `422`
+> (see the "Serving the model" section of the README).
 
 ### Model Loading
 ```python
@@ -537,7 +557,15 @@ if captured.sum() > 0:
 ### Issue 5 — Tab 3 Producing Identical Results for Different Obstacle Positions
 **Root Cause:** Obstacles outside training region `x = W/3` to `x = W/2` are
 out-of-distribution — model reverts to average learned pattern.
-**Resolution:** Tab 3 removed. Distribution shift warning added to Tab 2.
+**Resolution (at the time):** Tab 3 removed. Distribution shift warning added to Tab 2.
+
+**Current state:** Tab 3 was re-added in
+[PR #3](https://github.com/vamsigudipati/SwiftCFD/pull/3) using
+`streamlit-drawable-canvas`. The root cause is a property of the training
+data, not a bug, so it is handled at the serving layer instead: the inference
+service (`service/`) validates every request against the training envelope and
+returns `422` for obstacles or inlet velocities outside it, rather than
+silently returning an extrapolated field.
 
 ### Issue 6 — Colab Session Disconnections During Training
 **Resolution:** Save best checkpoint to Google Drive after every improvement.

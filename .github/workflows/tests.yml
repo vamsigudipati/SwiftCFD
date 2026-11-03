@@ -1,0 +1,36 @@
+name: Inference service tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: service/requirements.txt
+
+      - name: Install service + test dependencies (CPU torch)
+        run: |
+          python -m pip install --upgrade pip
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu \
+            -r service/requirements.txt pytest httpx
+
+      - name: Run tests (fixture weights, no network)
+        env:
+          SWIFTCFD_WEIGHTS: fixture
+        run: pytest -v
+
+      - name: Build Docker image
+        run: docker build -t swiftcfd-service:ci .
