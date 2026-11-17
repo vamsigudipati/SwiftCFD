@@ -18,6 +18,36 @@ from torch.nn.utils import weight_norm
 # INLINE MODEL DEFINITION (no deepcfd package dependency)
 # ═════════════════════════════════════════��════════════════════════
 
+# ── Derived from DeepCFD (MIT License) ────────────────────────────
+# From here to the end of class UNetEx, this code derives from DeepCFD,
+# https://github.com/mdribeiro/DeepCFD (commit f9cc152): create_layer is
+# copied from src/deepcfd/models/AutoEncoder.py; the other functions and
+# class UNetEx are reformatted from src/deepcfd/models/UNetEx.py.
+# See THIRD-PARTY-NOTICES.md. DeepCFD's copyright and permission notice:
+#
+# MIT License
+#
+# Copyright (c) 2020 Mateus Dias Ribeiro
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ───────────────────────────────────────────────────────────────────
+
 def create_layer(in_channels, out_channels, kernel_size, wn=True, bn=True,
                  activation=nn.ReLU, convolution=nn.Conv2d):
     assert kernel_size % 2 == 1
@@ -128,6 +158,8 @@ class UNetEx(nn.Module):
         if self.final_activation is not None:
             x = self.final_activation(x)
         return x
+
+# ── End of the code derived from DeepCFD ──────────────────────────
 
 
 # ══════════════════════════════════════════════════════════════════

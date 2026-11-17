@@ -306,6 +306,7 @@ SwiftCFD/
 ├── requirements.txt        ← Python dependencies
 ├── README.md               ← This file
 ├── DOCUMENTATION.md        ← Full project documentation
+├── THIRD-PARTY-NOTICES.md  ← DeepCFD's MIT notice; dataset licence
 ├── LICENSE                 ← MIT License
 ├── .gitignore
 └── assets/                 ← Result plots and snapshots
@@ -337,6 +338,36 @@ SwiftCFD/
 - 2D predictions only
 
 See [DOCUMENTATION.md](DOCUMENTATION.md) for full details.
+
+---
+
+## Credits and licences
+
+SwiftCFD builds on DeepCFD's code and is trained on the DeepCFD dataset.
+
+| Part | Source and author | Licence | How SwiftCFD uses it |
+|---|---|---|---|
+| Code: the UNetEx architecture | [DeepCFD](https://github.com/mdribeiro/DeepCFD), Copyright (c) 2020 Mateus Dias Ribeiro | [MIT](https://github.com/mdribeiro/DeepCFD/blob/f9cc152fe1190895cdeb18b102c2640bc5587deb/LICENSE) | `app.py` and `service/model.py` contain a reformatted copy (marked in each file, with DeepCFD's notice); the training scripts import the `deepcfd` package. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) |
+| Data: `dataX.pkl`, `dataY.pkl` | *DeepCFD*, Mateus Dias Ribeiro, Zenodo, [doi:10.5281/zenodo.3666056](https://doi.org/10.5281/zenodo.3666056) ([record](https://zenodo.org/records/3666056)) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | unchanged; not stored here; `app.py` downloads byte-identical copies from [vamsigudipati/deepcfd-model](https://huggingface.co/vamsigudipati/deepcfd-model) |
+
+The creator provides the dataset as is, without warranties (CC BY 4.0, Section 5). Cite the dataset as its record
+gives it:
+
+> Mateus Dias Ribeiro. (2020). DeepCFD [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.3666056
+
+```bibtex
+@software{mateus_dias_ribeiro_2020_3666056,
+  author    = {Mateus Dias Ribeiro},
+  title     = {DeepCFD},
+  month     = feb,
+  year      = 2020,
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.3666056},
+  url       = {https://doi.org/10.5281/zenodo.3666056}
+}
+```
+
+The DeepCFD paper is cited under Acknowledgements.
 
 ---
 
